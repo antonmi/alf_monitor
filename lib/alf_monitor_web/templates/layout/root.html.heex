@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "ALFMonitor", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+    <header>
+    </header>
+    <%= @inner_content %>
+    <script>
+      window.nodes = JSON.parse('<%= raw(@nodes) %>');
+      window.edges = JSON.parse('<%= raw(@edges) %>');
+
+    </script>
+
+
+    <div id="graph">
+    Graph will be here
+    </div>
+
+
+    <style>
+        #graph {
+            width: 1400px;
+            height: 800px;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+
+  </body>
+</html>

@@ -1,0 +1,21 @@
+
+
+
+<!--
+  Including other packages like Vis Timeline or Vis Graph3D here won't work.
+  You need the peer build to do that.
+-->
+
+<script type="text/javascript">
+  window.nodes = JSON.parse('<%= raw(@nodes) %>');
+  window.edges = JSON.parse('<%= raw(@edges) %>');
+</script>
+
+<style>
+    #graph {
+        width: 1400px;
+        height: 1000px;
+        top: 0px;
+        left: 0px;
+    }
+</style>
