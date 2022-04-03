@@ -28,6 +28,23 @@ defmodule ALFMonitor.Graph do
       end
     end)
 
-    {nodes, edges}
+    goto_edges =
+      components
+      |> Enum.reduce([], fn(component, edges) ->
+        if component[:type] == :goto do
+          goto_point = Enum.find(components, &(&1[:name] == component[:to]))
+
+          edge = %{
+              from: inspect(component.pid),
+              to: inspect(goto_point.pid)
+            }
+
+          edges ++ [edge]
+        else
+          edges
+        end
+      end)
+
+    {nodes, edges ++ goto_edges}
   end
 end
