@@ -79,6 +79,8 @@ defmodule ALFMonitorWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      import PhoenixLiveReact
+
       import ALFMonitorWeb.ErrorHelpers
       import ALFMonitorWeb.Gettext
       alias ALFMonitorWeb.Router.Helpers, as: Routes

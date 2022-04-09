@@ -51,8 +51,10 @@ defmodule ALFMonitor.Connector do
           info = :rpc.call(@node, ALF.Introspection, :info, [pipeline])
           Map.put(acc, pipeline, info)
         end)
+      false ->
+        %{}
       :ignored ->
-        []
+        %{}
     end
   end
 end

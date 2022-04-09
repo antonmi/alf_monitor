@@ -37,7 +37,8 @@ defmodule ALFMonitor.MixProject do
       {:swoosh, "~> 1.3"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:phoenix_live_react, "~> 0.4"}
     ]
   end
 end

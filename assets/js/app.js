@@ -25,27 +25,39 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import LiveReact, { initLiveReact } from "phoenix_live_react"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-import * as graph from "./graph"
 import initGraph from "./graph";
 
 let Hooks = {}
+
 Hooks.GraphData = {
   mounted() {
-    initGraph()
-    // let data = this.el.getAttribute("data-diagram-data")
-    // diagramInit(JSON.parse(data))
+    // initGraph()
   },
   updated() {
-    let data = JSON.parse(JSON.parse(this.el.textContent))
-    if (nodes.get(data.pid)) {
-      nodes.update([{id: data.pid, color: {background: '#FFFFFF'}}]);
-      setTimeout(function () {
-        nodes.update([{id: data.pid, color: {background: '#97C2FC'}}])
-      }, 200)
-    }
+    // let data = JSON.parse(JSON.parse(this.el.textContent))
+    // if (nodes.get(data.pid)) {
+    //   nodes.update([{id: data.pid, color: {background: '#FFFFFF'}}]);
+    //   setTimeout(function () {
+    //     nodes.update([{id: data.pid, color: {background: '#97C2FC'}}])
+    //   }, 200)
+    // }
+  }
+}
+
+import initFlow from "./flow";
+
+Hooks.LiveReact = {
+  mounted() {
+    initFlow()
+    console.log("LiveReact mounted")
+  },
+  updated() {
+    console.log("LiveReact updated")
+
   }
 }
 
@@ -65,6 +77,10 @@ liveSocket.disableDebug()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+document.addEventListener("DOMContentLoaded", e => {
+  initLiveReact()
+})
 
-// import diagramInit from "./diagram";
+
+
 

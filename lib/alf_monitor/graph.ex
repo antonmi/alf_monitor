@@ -5,10 +5,11 @@ defmodule ALFMonitor.Graph do
     nodes =
       components
       |> Enum.map(fn(component) ->
+      IO.inspect("========================================================")
+      IO.inspect(component)
         %{
           id: inspect(component.pid),
-          label: component.name,
-          shape: "box"
+          data: %{label: component.name}
         }
       end)
 
@@ -18,8 +19,9 @@ defmodule ALFMonitor.Graph do
       if Enum.any?(component.subscribe_to) do
         new_edges = Enum.map(component.subscribe_to, fn({to, _opts}) ->
           %{
-            from: inspect(component.pid),
-            to: inspect(to)
+            id: "#{inspect(component.pid)}-#{inspect(to)}",
+            source: inspect(component.pid),
+            target: inspect(to)
           }
         end)
         new_edges ++ edges
