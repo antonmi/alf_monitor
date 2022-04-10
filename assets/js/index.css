@@ -15,3 +15,16 @@
 .layoutflow .controls button:first-child {
     margin-right: 10px;
 }
+
+.component-label-stage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.component-label {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}

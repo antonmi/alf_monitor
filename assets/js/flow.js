@@ -1,42 +1,84 @@
-import React from 'react';
-import { useState } from 'react';
-import ReactFlow, { MiniMap, Controls } from 'react-flow-renderer';
+import React, { useState, useCallback, useMemo } from 'react';
+import ReactFlow, { Handle, Position, MiniMap, Controls, addEdge, useNodesState, useEdgesState } from 'react-flow-renderer';
 
-import { initialNodes, initialEdges } from './nodes-edges.js';
-import './index.css';
 
-const graphStyles = { width: "1000px", height: "500px" };
+const graphStyles = { width: "1600px", height: "500px" };
 
 import dagre from 'dagre';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 172;
-const nodeHeight = 36;
 
+const initialNodes = window.nodes
+const initialEdges = window.edges
 
-function Flow() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+import './index.css';
 
-  const onInit = function(instance) {
-    window.reactFlow = instance
-  }
+import {nodeWidth, nodeHeight} from "./component-node";
+import ComponentNode from "./component-node";
+
+const getLayoutedElements = (nodes, edges) => {
+  dagreGraph.setGraph({ rankdir: 'RL' });
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  nodes.forEach((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    node.targetPosition = 'right';
+    node.sourcePosition = 'left';
+
+    // We are shifting the dagre node position (anchor=center center) to the top left
+    // so it matches the React Flow node anchor point (top left).
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2,
+    };
+
+    return node;
+  });
+
+  return { nodes, edges };
+};
+
+const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+  initialNodes,
+  initialEdges
+);
+
+const Flow = () => {
+  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+
+  const nodeTypes = useMemo(() => ({ customNode: ComponentNode }), []);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      style={graphStyles}
-      fitView
-      onInit={onInit}
-    >
-      <MiniMap />
-      <Controls />
-    </ReactFlow>
+    <div className="layoutflow">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        connectionLineType="smoothstep"
+        style={graphStyles}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <MiniMap />
+        <Controls />
+      </ReactFlow>
+    </div>
   );
-}
+};
+
 
 
 import { createRoot } from 'react-dom/client';
