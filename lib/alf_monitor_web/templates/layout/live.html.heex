@@ -7,12 +7,6 @@
     phx-click="lv:clear-flash"
     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
-  <%#= live_react_component("Components.Ccc", [name: "ccc"], id: "my-component-1") %>
-
-  <div id="graph-data" phx-hook="GraphData">
-    <%= @inner_content %>
-  </div>
-
   <div id="live-react-data" phx-hook="LiveReact">
       <%= @inner_content %>
   </div>

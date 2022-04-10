@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import ReactFlow, { Handle, Position, MiniMap, Controls, addEdge, useNodesState, useEdgesState } from 'react-flow-renderer';
 
 
-const graphStyles = { width: "1600px", height: "500px" };
+const graphStyles = { width: "1600px", height: "800px" };
 
 import dagre from 'dagre';
 
@@ -19,22 +19,22 @@ import {nodeWidth, nodeHeight} from "./component-node";
 import ComponentNode from "./component-node";
 
 const getLayoutedElements = (nodes, edges) => {
-  dagreGraph.setGraph({ rankdir: 'RL' });
+  dagreGraph.setGraph({ rankdir: 'LR' });
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
   });
 
   edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
+    dagreGraph.setEdge(edge.target, edge.source);
   });
 
   dagre.layout(dagreGraph);
 
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = 'right';
-    node.sourcePosition = 'left';
+    node.targetPosition = 'left';
+    node.sourcePosition = 'right';
 
     // We are shifting the dagre node position (anchor=center center) to the top left
     // so it matches the React Flow node anchor point (top left).
@@ -70,7 +70,7 @@ const Flow = () => {
         connectionLineType="smoothstep"
         style={graphStyles}
         nodeTypes={nodeTypes}
-        fitView
+        minZoom={0.3}
       >
         <MiniMap />
         <Controls />

@@ -9,6 +9,7 @@ function ComponentNode({ data }) {
   const src = "images/" + data.type + ".png"
   const labelClass = data.type == 'stage' ? 'component-label-stage' : 'component-label'
 
+
   return (
     <>
       <div>

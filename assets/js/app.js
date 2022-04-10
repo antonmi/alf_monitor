@@ -29,24 +29,7 @@ import LiveReact, { initLiveReact } from "phoenix_live_react"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-import initGraph from "./graph";
-
 let Hooks = {}
-
-Hooks.GraphData = {
-  mounted() {
-    // initGraph()
-  },
-  updated() {
-    // let data = JSON.parse(JSON.parse(this.el.textContent))
-    // if (nodes.get(data.pid)) {
-    //   nodes.update([{id: data.pid, color: {background: '#FFFFFF'}}]);
-    //   setTimeout(function () {
-    //     nodes.update([{id: data.pid, color: {background: '#97C2FC'}}])
-    //   }, 200)
-    // }
-  }
-}
 
 import initFlow from "./flow";
 
