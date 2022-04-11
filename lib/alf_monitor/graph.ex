@@ -5,11 +5,9 @@ defmodule ALFMonitor.Graph do
     nodes =
       components
       |> Enum.map(fn(component) ->
-#      IO.inspect("========================================================")
-#      IO.inspect(component)
         %{
           id: inspect(component.pid),
-          data: %{label: component.name, type: component.type},
+          data: component,
           position: %{x: 0, y: 0},
           type: "customNode",
           draggable: false

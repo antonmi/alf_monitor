@@ -24,7 +24,7 @@ const initialEdges = window.edges
 import './index.css';
 
 import {nodeWidth, nodeHeight} from "./componentNode";
-import ComponentNode from "./componentNode";
+import componentNode from "./componentNode";
 
 const getLayoutedElements = (nodes, edges) => {
   dagreGraph.setGraph({ rankdir: 'LR' });
@@ -66,7 +66,7 @@ const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
-  const nodeTypes = useMemo(() => ({ customNode: ComponentNode }), []);
+  const nodeTypes = useMemo(() => ({ customNode: componentNode }), []);
   const onInit = (instance) => window.flowInstance = instance;
 
   const dispatch = useDispatch();

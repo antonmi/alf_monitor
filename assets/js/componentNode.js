@@ -10,11 +10,11 @@ function splitLabel(label) {
   return parts.join("_ ")
 }
 
-function ComponentNode({ data }) {
+function componentNode({ data }) {
   const src = "images/" + data.type + ".png"
   const labelClass = data.type == 'stage' ? 'component-label-stage' : 'component-label'
 
-  const label = splitLabel(data.label)
+  const label = splitLabel(data.name)
 
   return (
     <>
@@ -30,4 +30,4 @@ function ComponentNode({ data }) {
   );
 }
 
-export default ComponentNode
+export default componentNode
