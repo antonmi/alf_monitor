@@ -3,10 +3,8 @@ defmodule ALFMonitor.TelemetryHandler do
   alias ALFMonitor.LiveViewBroadcaster
 
   def handle_event([:alf, :component, :start], %{system_time: system_time}, metadata) do
-#    IO.inspect("start")
 
     ip = metadata[:ip]
-
 
     pid = get_in(metadata, [:component, :pid])
 

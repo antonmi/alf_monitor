@@ -19,19 +19,45 @@ let Hooks = {}
 
 var dispatch = null;
 
+window.componentIps = {}
+
+function setComponentIps(payload) {
+  let id = payload.id
+  let action = payload.data.action
+
+  let ip = payload.data.ip
+
+  if (ip) {
+    if (!window.componentIps[id]) {
+      window.componentIps[id] = {}
+    }
+    if (!window.componentIps[id][ip.ref]) {
+      window.componentIps[id][ip.ref] = {}
+    }
+    if (action == "start") {
+      window.componentIps[id][ip.ref]["start"] = {event: ip.event, time: payload.data.time}
+    } else if (action == "stop") {
+      window.componentIps[id][ip.ref]["stop"] = {event: ip.event, duration: payload.data.duration}
+    }
+  }
+}
+
 Hooks.LiveReact = {
   mounted() {
     initFlow()
   },
   updated() {
     let data = JSON.parse(JSON.parse(this.el.textContent))
-    let action = {id: data.pid, data: data}
-    store.dispatch(addActiveComponentId(action))
+    let payload = {id: data.pid, data: data}
+    setComponentIps(payload)
 
-    setTimeout(function () {
-      action = {id: data.pid}
-      store.dispatch(removeActiveComponentId(action))
-    }, 200)
+    if (data.action == "start") {
+      store.dispatch(addActiveComponentId(payload))
+    } else if (data.action == "stop") {
+      setTimeout(function () {
+        store.dispatch(removeActiveComponentId(payload))
+      }, 100)
+    }
   }
 }
 
