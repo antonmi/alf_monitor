@@ -9,6 +9,8 @@ import {
 const Sidebar = () => {
   const componentId = useSelector(getComponentId)
   const componentData = useSelector(getComponentData)
+  let allComponentIps = window.componentIps
+  let ips = allComponentIps[componentId]
   const dispatch = useDispatch();
 
   return (
@@ -22,6 +24,9 @@ const Sidebar = () => {
         </p>
         <p>
           {JSON.stringify(componentData)}
+        </p>
+          {JSON.stringify(ips)}
+        <p>
         </p>
       </div>
     </>

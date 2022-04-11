@@ -7,7 +7,7 @@
     phx-click="lv:clear-flash"
     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
-  <div id="live-react-data" phx-hook="LiveReact">
+  <div id="live-react-data" phx-hook="LiveReact" style="display: none">
       <%= @inner_content %>
   </div>
 

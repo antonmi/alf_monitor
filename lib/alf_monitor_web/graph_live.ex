@@ -20,15 +20,16 @@ defmodule ALFMonitorWeb.GraphLive do
   end
 
   def handle_event("changes", _value, socket) do
-#    socket =
-#      socket
-#      |> assign(:light_bulb_status, "on")
-
     {:noreply, socket}
   end
 
-  def handle_info({:send_data_to_client, {pid, action}}, socket) when action in [:start, :stop] do
-    data = %{pid: inspect(pid), action: action}
+  def handle_info({:send_data_to_client, {pid, action, time, ip}}, socket) when action in [:start, :stop] do
+    data = case action do
+      :start ->
+        %{pid: inspect(pid), time: time, action: action, ip: ip}
+      :stop ->
+        %{pid: inspect(pid), duration: time, action: action, ip: ip}
+    end
     socket =
       socket
       |> assign(:data, Jason.encode!(data))

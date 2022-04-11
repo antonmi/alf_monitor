@@ -7,19 +7,31 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import initFlow from "./flow";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  addActiveComponentId,
+  removeActiveComponentId
+} from './storage';
+import store from './store'
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let Hooks = {}
 
+var dispatch = null;
+
 Hooks.LiveReact = {
   mounted() {
     initFlow()
-    // initSidebar()
-    console.log("LiveReact mounted")
   },
   updated() {
-    console.log("LiveReact updated")
+    let data = JSON.parse(JSON.parse(this.el.textContent))
+    let action = {id: data.pid, data: data}
+    store.dispatch(addActiveComponentId(action))
 
+    setTimeout(function () {
+      action = {id: data.pid}
+      store.dispatch(removeActiveComponentId(action))
+    }, 200)
   }
 }
 

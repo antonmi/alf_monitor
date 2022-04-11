@@ -32,6 +32,12 @@ div#app {
 div.component {
     cursor: pointer;
 }
+div.component.selected {
+    background-color: lightgrey;
+}
+div.component.active {
+    background-color: lightgreen;
+}
 .component-label-stage {
     cursor: pointer;
     position: absolute;
