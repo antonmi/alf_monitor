@@ -11,7 +11,8 @@ defmodule ALFMonitor.Graph do
           id: inspect(component.pid),
           data: %{label: component.name, type: component.type},
           position: %{x: 0, y: 0},
-          type: "customNode"
+          type: "customNode",
+          draggable: false
         }
       end)
 

@@ -16,7 +16,24 @@
     margin-right: 10px;
 }
 
+div#app {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+    border: 2px solid black;
+}
+
+.flex-child:first-child {
+    margin-right: 20px;
+}
+
+div.component {
+    cursor: pointer;
+}
 .component-label-stage {
+    cursor: pointer;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -24,6 +41,7 @@
 }
 
 .component-label {
+    cursor: pointer;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -100%);

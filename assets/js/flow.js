@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import ReactFlow, { Handle, Position, MiniMap, Controls, addEdge, useNodesState, useEdgesState } from 'react-flow-renderer';
 
 
-const graphStyles = { width: "1600px", height: "800px" };
+const graphStyles = { width: "1000px", height: "600px" };
 
 import dagre from 'dagre';
 
@@ -59,10 +59,18 @@ const Flow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
   const nodeTypes = useMemo(() => ({ customNode: ComponentNode }), []);
+  const onInit = (instance) => window.flowInstance = instance;
+
+  const onNodeClick = function (event, node) {
+    console.log(event)
+    node.data.label = "Asdsds"
+  }
+
 
   return (
     <div className="layoutflow">
       <ReactFlow
+        onInit={onInit}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -70,6 +78,10 @@ const Flow = () => {
         connectionLineType="smoothstep"
         style={graphStyles}
         nodeTypes={nodeTypes}
+        nodesDraggable={false}
+        onNodeClick={onNodeClick}
+        maxZoom={2.0}
+        defaultZoom={0.5}
         minZoom={0.3}
       >
         <MiniMap />
@@ -84,7 +96,7 @@ const Flow = () => {
 import { createRoot } from 'react-dom/client';
 
 function initFlow() {
-  const container = document.getElementById('root');
+  const container = document.getElementById('flow');
   const root = createRoot(container);
   root.render(<Flow/>);
 }
