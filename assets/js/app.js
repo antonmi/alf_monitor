@@ -7,7 +7,6 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import initFlow from "./flow";
-import initSidebar from "./sidebar";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let Hooks = {}
@@ -15,7 +14,7 @@ let Hooks = {}
 Hooks.LiveReact = {
   mounted() {
     initFlow()
-    initSidebar()
+    // initSidebar()
     console.log("LiveReact mounted")
   },
   updated() {

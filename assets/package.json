@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "dagre": "^0.8.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-flow-renderer": "^10.0.8"
+    "react-flow-renderer": "^10.0.8",
+    "react-redux": "^7.2.8"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",

@@ -1,10 +1,22 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import ReactFlow, { Handle, Position, MiniMap, Controls, addEdge, useNodesState, useEdgesState } from 'react-flow-renderer';
+import store from './store'
+import { Provider } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+  selectCount,
+  selectComponent
+} from './counterSlice';
 
+import dagre from 'dagre';
+
+import Sidebar from "./sidebar";
 
 const graphStyles = { width: "1000px", height: "600px" };
 
-import dagre from 'dagre';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -15,8 +27,8 @@ const initialEdges = window.edges
 
 import './index.css';
 
-import {nodeWidth, nodeHeight} from "./component-node";
-import ComponentNode from "./component-node";
+import {nodeWidth, nodeHeight} from "./componentNode";
+import ComponentNode from "./componentNode";
 
 const getLayoutedElements = (nodes, edges) => {
   dagreGraph.setGraph({ rankdir: 'LR' });
@@ -61,14 +73,17 @@ const Flow = () => {
   const nodeTypes = useMemo(() => ({ customNode: ComponentNode }), []);
   const onInit = (instance) => window.flowInstance = instance;
 
+  const dispatch = useDispatch();
+
   const onNodeClick = function (event, node) {
-    console.log(event)
-    node.data.label = "Asdsds"
+    dispatch(incrementByAmount(10))
+    const action = {id: node.id, data: node.data}
+    dispatch(selectComponent(action))
   }
 
 
   return (
-    <div className="layoutflow">
+    <div className="layoutflow flex-child">
       <ReactFlow
         onInit={onInit}
         nodes={nodes}
@@ -96,9 +111,14 @@ const Flow = () => {
 import { createRoot } from 'react-dom/client';
 
 function initFlow() {
-  const container = document.getElementById('flow');
+  const container = document.getElementById('app');
   const root = createRoot(container);
-  root.render(<Flow/>);
+  root.render(
+    <Provider store={store}>
+      <Flow/>
+      <Sidebar/>
+    </Provider>
+  );
 }
 
 export default initFlow
