@@ -4,12 +4,8 @@ import store from './store'
 import { Provider } from 'react-redux'
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  decrement,
-  increment,
-  incrementByAmount,
-  selectCount,
   selectComponent
-} from './counterSlice';
+} from './storage';
 
 import dagre from 'dagre';
 
@@ -76,7 +72,6 @@ const Flow = () => {
   const dispatch = useDispatch();
 
   const onNodeClick = function (event, node) {
-    dispatch(incrementByAmount(10))
     const action = {id: node.id, data: node.data}
     dispatch(selectComponent(action))
   }
