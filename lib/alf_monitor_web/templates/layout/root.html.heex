@@ -15,8 +15,8 @@
     </header>
     <%= @inner_content %>
     <script>
-      window.nodes = JSON.parse('<%= raw(@nodes) %>');
-      window.edges = JSON.parse('<%= raw(@edges) %>');
+       window.nodes = JSON.parse(atob('<%= @nodes %>'));
+       window.edges = JSON.parse(atob('<%= raw @edges %>'));
     </script>
 
 

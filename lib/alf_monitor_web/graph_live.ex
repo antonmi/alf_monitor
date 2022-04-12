@@ -12,10 +12,12 @@ defmodule ALFMonitorWeb.GraphLive do
   def mount(params, opts, socket) do
     LiveViewBroadcaster.add_pid(self())
     {nodes, edges} = nodes_and_edges()
+    nodes = Base.encode64(Jason.encode!(nodes))
+    edges = Base.encode64(Jason.encode!(edges))
     socket =
       socket
-      |> assign(:nodes, Jason.encode!(nodes))
-      |> assign(:edges, Jason.encode!(edges))
+      |> assign(:nodes, nodes)
+      |> assign(:edges, edges)
     {:ok, socket}
   end
 
@@ -32,7 +34,7 @@ defmodule ALFMonitorWeb.GraphLive do
     end
     socket =
       socket
-      |> assign(:data, Jason.encode!(data))
+      |> assign(:data, Base.encode64(Jason.encode!(data)))
     {:noreply, socket}
   end
 

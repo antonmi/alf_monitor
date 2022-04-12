@@ -47,7 +47,8 @@ Hooks.LiveReact = {
     initFlow()
   },
   updated() {
-    let data = JSON.parse(JSON.parse(this.el.textContent))
+    let json = atob(JSON.parse(this.el.textContent))
+    let data = JSON.parse(json)
     let payload = {id: data.pid, data: data}
     setComponentIps(payload)
 
