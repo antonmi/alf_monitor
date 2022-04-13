@@ -17,7 +17,7 @@ defmodule ALFMonitorWeb.Router do
   scope "/", ALFMonitorWeb do
     pipe_through :browser
 
-#    get "/", PageController, :index
+    #    get "/", PageController, :index
     live "/", GraphLive
   end
 end

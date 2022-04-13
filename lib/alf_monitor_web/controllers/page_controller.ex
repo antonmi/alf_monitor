@@ -9,6 +9,4 @@ defmodule ALFMonitorWeb.PageController do
       "index.html"
     )
   end
-
-
 end

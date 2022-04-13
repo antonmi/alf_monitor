@@ -14,7 +14,6 @@ config :alf_monitor, ALFMonitorWeb.Endpoint,
   pubsub_server: ALFMonitor.PubSub,
   live_view: [signing_salt: "vdj9ht04"]
 
-
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
@@ -25,7 +24,13 @@ config :esbuild,
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --loader:.js=jsx),
     cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Enum.join([Path.expand("../deps", __DIR__), Path.expand("../assets/node_modules", __DIR__)], ":")}
+    env: %{
+      "NODE_PATH" =>
+        Enum.join(
+          [Path.expand("../deps", __DIR__), Path.expand("../assets/node_modules", __DIR__)],
+          ":"
+        )
+    }
   ]
 
 # Configures Elixir's Logger

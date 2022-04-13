@@ -11,9 +11,8 @@ defmodule ALFMonitor.Application do
       {Phoenix.PubSub, name: ALFMonitor.PubSub},
       # Start the Endpoint (http/https)
       ALFMonitorWeb.Endpoint,
-
-     {ALFMonitor.Connector, []},
-     {ALFMonitor.LiveViewBroadcaster, []}
+      {ALFMonitor.Connector, []},
+      {ALFMonitor.LiveViewBroadcaster, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

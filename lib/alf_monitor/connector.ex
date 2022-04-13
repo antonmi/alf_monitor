@@ -1,8 +1,9 @@
 defmodule ALFMonitor.Connector do
   use GenServer
 
+  @interval 3_000
   @node :node1@localhost
-  #iex --sname node2@localhost -S mix
+  # iex --sname node2@localhost -S mix
 
   alias ALFMonitor.TelemetryHandler
 
@@ -24,9 +25,10 @@ defmodule ALFMonitor.Connector do
     :rpc.call(
       @node,
       ALF.TelemetryBroadcaster,
-      :register_node,
-      [Node.self(), TelemetryHandler, :handle_event]
+      :register_remote_function,
+      [Node.self(), TelemetryHandler, :handle_event, [interval: @interval]]
     )
+
     {:noreply, state}
   end
 
@@ -46,13 +48,16 @@ defmodule ALFMonitor.Connector do
     case Node.connect(@node) do
       true ->
         pipelines = :rpc.call(@node, ALF.Introspection, :pipelines, [])
+
         pipelines
-        |> Enum.reduce(%{}, fn(pipeline, acc) ->
+        |> Enum.reduce(%{}, fn pipeline, acc ->
           info = :rpc.call(@node, ALF.Introspection, :info, [pipeline])
           Map.put(acc, pipeline, info)
         end)
+
       false ->
         %{}
+
       :ignored ->
         %{}
     end
