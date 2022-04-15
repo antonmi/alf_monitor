@@ -18,15 +18,28 @@
 
 div#app {
     display: flex;
+    flex-wrap: wrap;
+}
+
+div.sidebar {
+    position:relative;
+}
+
+div .ips-view {
+    height: 600px;
+    overflow: scroll;
 }
 
 .flex-child {
     flex: 1;
     border: 2px solid black;
+    border-radius: 6px;
+    margin-right: 20px;
 }
 
-.flex-child:first-child {
-    margin-right: 20px;
+div#sidebar-controls {
+    position: absolute;
+    bottom: 0px;
 }
 
 div.component {
@@ -35,6 +48,7 @@ div.component {
 div.component.selected {
     background-color: lightgrey;
 }
+
 div.component.active {
     background-color: lightgreen;
 }
@@ -51,4 +65,18 @@ div.component.active {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -100%);
+}
+
+div .ip-packet .events {
+    display: flex;
+}
+
+div.ip-packet.events.start {
+    flex: 1
+}
+
+span.ip-ref {
+    background: #f4f5f6;
+    color: #800;
+    font-family: monospace;
 }

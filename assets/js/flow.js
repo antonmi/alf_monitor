@@ -11,7 +11,7 @@ import dagre from 'dagre';
 
 import Sidebar from "./sidebar";
 
-const graphStyles = { width: "1000px", height: "600px" };
+const graphStyles = { height: "800px" };
 
 
 const dagreGraph = new dagre.graphlib.Graph();
@@ -111,7 +111,7 @@ function initFlow() {
   root.render(
     <Provider store={store}>
       <Flow/>
-      <Sidebar/>
+      <Sidebar />
     </Provider>
   );
 }
