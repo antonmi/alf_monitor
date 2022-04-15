@@ -1,5 +1,5 @@
 .layoutflow {
-    flex-grow: 1;
+    flex: 2 1 0;
     position: relative;
     height: 100%;
 }
@@ -22,6 +22,7 @@ div#app {
 }
 
 div.sidebar {
+    flex: 1 1 0;
     position:relative;
 }
 
@@ -31,11 +32,11 @@ div .ips-view {
 }
 
 .flex-child {
-    flex: 1;
     border: 2px solid black;
     border-radius: 6px;
     margin-right: 20px;
 }
+
 
 div#sidebar-controls {
     position: absolute;

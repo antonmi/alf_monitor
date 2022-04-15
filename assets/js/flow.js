@@ -78,7 +78,7 @@ const Flow = () => {
 
 
   return (
-    <div className="layoutflow flex-child">
+    <div className="layoutflow flex-child grid-66">
       <ReactFlow
         onInit={onInit}
         nodes={nodes}
