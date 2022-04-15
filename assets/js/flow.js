@@ -66,7 +66,7 @@ const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
-  const nodeTypes = useMemo(() => ({ customNode: componentNode }), []);
+  const nodeTypes = useMemo(() => ({ componentNode: componentNode }), []);
   const onInit = (instance) => window.flowInstance = instance;
 
   const dispatch = useDispatch();
