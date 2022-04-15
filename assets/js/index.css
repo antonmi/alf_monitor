@@ -18,16 +18,17 @@
 
 div#app {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 div.sidebar {
     flex: 1 1 0;
     position:relative;
+    overflow-x: hidden;
 }
 
 div .ips-view {
-    height: 600px;
+    height: 800px;
     overflow: scroll;
 }
 
