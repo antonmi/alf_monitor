@@ -29,8 +29,12 @@ const Sidebar = () => {
 
   let activeWindow
   if (currentView == 'info') {
+    let source_code = componentData['source_code'] || "no code"
     activeWindow =
       <div className={'info-view'}>
+        <pre>
+          <code dangerouslySetInnerHTML={{__html: hljs.highlight(source_code, {language: 'elixir'}).value}}></code>
+        </pre>
         <pre>
           <code dangerouslySetInnerHTML={{__html: hljs.highlight(stringify(componentData), {language: 'javascript'}).value}}></code>
         </pre>
@@ -60,14 +64,6 @@ const Sidebar = () => {
         )
       }
     </div>
-  } else if (currentView == 'code') {
-    let source_code = componentData['source_code'] || "no code"
-    activeWindow =
-      <div className={'code-view'}>
-        <pre>
-          <code dangerouslySetInnerHTML={{__html: hljs.highlight(source_code, {language: 'elixir'}).value}}></code>
-        </pre>
-      </div>
   }
 
   return (
@@ -80,9 +76,6 @@ const Sidebar = () => {
           </button>
           <button onClick={() => setCurrentView('ips')} disabled={currentView == 'ips'}>
             IPs
-          </button>
-          <button onClick={() => setCurrentView('code')} disabled={currentView == 'code'}>
-            Code
           </button>
         </div>
       </div>
