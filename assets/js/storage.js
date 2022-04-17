@@ -14,10 +14,10 @@ export const storage = createSlice({
       state.componentData = action.payload.data
     },
     addActiveComponentId: (state, action) => {
-      state.activeComponentIds.push(action.payload.id)
+      state.activeComponentIds.push(action.payload)
     },
     removeActiveComponentId: (state, action) => {
-      const index = state.activeComponentIds.indexOf(action.payload.id)
+      const index = state.activeComponentIds.indexOf(action.payload)
       if (index > -1) {
         state.activeComponentIds.splice(index, 1)
       }

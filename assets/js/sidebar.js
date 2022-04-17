@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import hljs from "highlight.js";
+import TracingPopup from "./tracingPopup";
 
 import {
   getComponentId,
@@ -14,6 +15,7 @@ const Sidebar = () => {
   let ips = allComponentIps[componentId] || []
 
   const [currentView, setCurrentView] = useState('info')
+  const [popupIpRef, setPopupIpRef] = useState(false)
 
   function stringifyEvent(value, key) {
     if (value) {
@@ -46,7 +48,7 @@ const Sidebar = () => {
         Object.entries(ips).map(([ref, value]) =>
           (
             <div className={'ip-packet'} key={ref}>
-              <span className={'ip-ref'}>{ref}</span>
+              <span className={'ip-ref'} onClick={() => setPopupIpRef(ref)}>{ref}</span>
               <div className={'events'}>
                 <div className={'start'}>
                   <pre>
@@ -79,6 +81,7 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
+      <TracingPopup ipRef={popupIpRef} setIpRef={setPopupIpRef}/>
     </>
   );
 }

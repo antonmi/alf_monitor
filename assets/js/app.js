@@ -22,10 +22,9 @@ var dispatch = null;
 window.componentIps = {}
 
 function setComponentIps(payload) {
-  let id = payload.id
-  let action = payload.data.action
-
-  let ip = payload.data.ip
+  let id = payload.component.pid
+  let action = payload.action
+  let ip = payload.ip
 
   if (ip) {
     if (!window.componentIps[id]) {
@@ -34,10 +33,11 @@ function setComponentIps(payload) {
     if (!window.componentIps[id][ip.ref]) {
       window.componentIps[id][ip.ref] = {}
     }
+    window.componentIps[id][ip.ref]['component'] = payload.component
     if (action == "start") {
-      window.componentIps[id][ip.ref]["start"] = {event: ip.event, time: payload.data.time}
+      window.componentIps[id][ip.ref]['start'] = {event: ip.event, time: payload.time}
     } else if (action == "stop") {
-      window.componentIps[id][ip.ref]["stop"] = {event: ip.event, duration: payload.data.duration}
+      window.componentIps[id][ip.ref]['stop'] = {event: ip.event, duration: payload.duration}
     }
   }
 }
@@ -49,14 +49,14 @@ Hooks.LiveReact = {
   updated() {
     let json = atob(JSON.parse(this.el.textContent))
     let data = JSON.parse(json)
-    let payload = {id: data.pid, data: data}
-    setComponentIps(payload)
+    let payload = {id: data.component.pid, data: data}
+    setComponentIps(data)
 
     if (data.action == "start") {
-      store.dispatch(addActiveComponentId(payload))
+      store.dispatch(addActiveComponentId(data.component.pid))
     } else if (data.action == "stop") {
       setTimeout(function () {
-        store.dispatch(removeActiveComponentId(payload))
+        store.dispatch(removeActiveComponentId(data.component.pid))
       }, 100)
     }
   }

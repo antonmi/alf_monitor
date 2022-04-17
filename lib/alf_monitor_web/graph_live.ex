@@ -27,15 +27,15 @@ defmodule ALFMonitorWeb.GraphLive do
     {:noreply, socket}
   end
 
-  def handle_info({:send_data_to_client, {pid, action, time, ip}}, socket)
+  def handle_info({:send_data_to_client, {action, time, %{ip: ip, component: component}}}, socket)
       when action in [:start, :stop] do
     data =
       case action do
         :start ->
-          %{pid: inspect(pid), time: time, action: action, ip: ip}
+          %{action: action, time: time, ip: ip, component: component}
 
         :stop ->
-          %{pid: inspect(pid), duration: time, action: action, ip: ip}
+          %{action: action, duration: time, ip: ip, component: component}
       end
 
     socket =

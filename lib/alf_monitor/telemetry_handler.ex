@@ -3,13 +3,13 @@ defmodule ALFMonitor.TelemetryHandler do
 
   def handle_event([:alf, :component, :start], %{system_time: system_time}, metadata) do
     ip = metadata[:ip]
-    pid = get_in(metadata, [:component, :pid])
-    LiveViewBroadcaster.broadcast({pid, :start, div(system_time, 1000), ip})
+    component = get_in(metadata, [:component])
+    LiveViewBroadcaster.broadcast({:start, div(system_time, 1000), %{ip: ip, component: component}})
   end
 
   def handle_event([:alf, :component, :stop], %{duration: duration} = data, metadata) do
     ip = metadata[:ip]
-    pid = get_in(metadata, [:component, :pid])
-    LiveViewBroadcaster.broadcast({pid, :stop, div(duration, 1000), ip})
+    component = get_in(metadata, [:component])
+    LiveViewBroadcaster.broadcast({:stop, div(duration, 1000), %{ip: ip, component: component}})
   end
 end
