@@ -13,9 +13,30 @@ export const nodeWidth = 160;
 export const nodeHeight = 120;
 
 function splitLabel(label) {
+  const len = 10
   const parts = label.split("_")
+  const initialValue = [parts.shift()]
 
-  return parts.join("_ ")
+  const newParts = parts.reduce(
+    function(previousValue, currentValue){
+      let last = previousValue.pop()
+      if (last.length < len) {
+        previousValue.push(last + "_" + currentValue)
+        return previousValue
+      } else {
+        previousValue.push(last)
+        previousValue.push(currentValue)
+        return previousValue
+      }
+    },
+    initialValue
+  );
+
+  return newParts.join("_ ")
+}
+
+function formatPipelineName(name) {
+  return name.slice(7)
 }
 
 function getClassName(id) {
@@ -38,8 +59,15 @@ function componentNode({ data }) {
   const imageSrc = "images/" + data.type + ".png"
   const labelClass = data.type == 'stage' ? 'component-label-stage' : 'component-label'
 
-  const label = splitLabel(data.name)
-  const className = getClassName(data.pid)
+  let label
+  if (data.type == 'producer' || data.type == 'consumer') {
+    label = formatPipelineName(data.pipeline_module)
+  } else if (data.type == 'goto') {
+    label = splitLabel(data.name) + " -> " + splitLabel(data.to)
+  } else {
+    label = splitLabel(data.name)
+  }
+    const className = getClassName(data.pid)
 
   return (
     <>
