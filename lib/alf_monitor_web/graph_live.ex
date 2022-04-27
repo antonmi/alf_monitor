@@ -10,6 +10,9 @@ defmodule ALFMonitorWeb.GraphLive do
   end
 
   def mount(params, opts, socket) do
+    Connector.load_data()
+    Connector.init_telemetry_handlers()
+
     LiveViewBroadcaster.add_pid(self())
     {nodes, edges} = nodes_and_edges()
     nodes = Base.encode64(Jason.encode!(nodes))

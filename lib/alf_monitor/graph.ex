@@ -1,6 +1,4 @@
 defmodule ALFMonitor.Graph do
-  # https://visjs.github.io/vis-network/docs/network/nodes.html#
-
   def pipeline_to_graph(components) do
     nodes =
       components
@@ -17,9 +15,9 @@ defmodule ALFMonitor.Graph do
     edges =
       components
       |> Enum.reduce([], fn component, edges ->
-        if Enum.any?(component.subscribe_to) do
+        if Enum.any?(component.subscribed_to) do
           new_edges =
-            Enum.map(component.subscribe_to, fn {to, _opts} ->
+            Enum.map(component.subscribed_to, fn {to, _ref} ->
               %{
                 id: "#{inspect(component.pid)}-#{inspect(to)}",
                 source: inspect(component.pid),

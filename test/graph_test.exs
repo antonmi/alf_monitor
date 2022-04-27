@@ -11,7 +11,7 @@ defmodule ALFMonitor.GraphTest do
       pid: "#PID<0.232.0>",
       pipe_module: ALF.IntrospectionTest.SimplePipeline,
       pipeline_module: ALF.IntrospectionTest.SimplePipeline,
-      subscribe_to: [],
+      subscribed_to: [],
       telemetry_enabled: false
     },
     %{
@@ -24,7 +24,7 @@ defmodule ALFMonitor.GraphTest do
       pid: "#PID<0.233.0>",
       pipe_module: ALF.IntrospectionTest.SimplePipeline,
       pipeline_module: ALF.IntrospectionTest.SimplePipeline,
-      subscribe_to: [{"#PID<0.232.0>", [max_demand: 1]}],
+      subscribed_to: [{"#PID<0.232.0>", "#Reference<0.563406805.4136894468.129270>"}],
       subscribers: [{"#PID<0.234.0>", "#Reference<0.563406805.4136894468.129270>"}],
       telemetry_enabled: false
     },
@@ -38,7 +38,7 @@ defmodule ALFMonitor.GraphTest do
       pid: "#PID<0.234.0>",
       pipe_module: ALF.IntrospectionTest.SimplePipeline,
       pipeline_module: ALF.IntrospectionTest.SimplePipeline,
-      subscribe_to: [{"#PID<0.233.0>", [max_demand: 1]}],
+      subscribed_to: [{"#PID<0.233.0>", "#Reference<0.563406805.4136894468.129275>"}],
       subscribers: [{"#PID<0.235.0>", "#Reference<0.563406805.4136894468.129275>"}],
       telemetry_enabled: false
     },
@@ -48,7 +48,7 @@ defmodule ALFMonitor.GraphTest do
       pid: "#PID<0.235.0>",
       pipe_module: ALF.IntrospectionTest.SimplePipeline,
       pipeline_module: ALF.IntrospectionTest.SimplePipeline,
-      subscribe_to: [{"#PID<0.234.0>", [max_demand: 1]}],
+      subscribed_to: [{"#PID<0.234.0>", "#Reference<0.563406805.4136894468.129275>"}],
       telemetry_enabled: false
     }
   ]
