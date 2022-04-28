@@ -62,7 +62,9 @@ function componentNode({ data }) {
   if (data.type == 'producer' || data.type == 'consumer') {
     label = formatPipelineName(data.pipeline_module)
   } else if (data.type == 'goto') {
-    label = splitLabel(data.name) + " -> " + splitLabel(data.to)
+    label = splitLabel(data.name) + ' -> ' + splitLabel(data.to)
+  } else if (data.count && data.count > 1) {
+    label = splitLabel(data.name + ' (' + data.count + ')')
   } else {
     label = splitLabel(data.name)
   }

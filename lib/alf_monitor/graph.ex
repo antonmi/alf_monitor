@@ -1,12 +1,18 @@
 defmodule ALFMonitor.Graph do
+  @basic_width 160
+  @basic_height 120
+
   def pipeline_to_graph(components) do
+    components = group_by_stage_set_ref(components)
     nodes =
       components
       |> Enum.map(fn component ->
+        width = width_for(component)
+        height = height_for(component)
         %{
           id: inspect(component.pid),
-          data: Map.merge(component, %{width: 160, height: 120}),
-          position: %{x: 0, y: 0},
+          data: Map.merge(component, %{width: width, height: height}),
+          position: %{x: 0, y: -height},
           type: "componentNode",
           draggable: false
         }
@@ -33,4 +39,32 @@ defmodule ALFMonitor.Graph do
 
     {nodes, edges}
   end
+
+  defp group_by_stage_set_ref(components) do
+    components
+    |> Enum.reduce([], fn(component, acc) ->
+      if (component.type == :stage) and component.count > 1 do
+        if component.number == 0 do
+          [component | acc]
+        else
+          acc
+        end
+      else
+        [component | acc]
+      end
+    end)
+    |> Enum.reverse
+  end
+
+  defp width_for(%{count: count}) do
+    round(@basic_width * :math.pow(count, 1/3))
+    @basic_width
+  end
+  defp width_for(_no_count), do: @basic_width
+
+  defp height_for(%{count: count}) do
+#    round(@basic_height * :math.pow(count, 1/3))
+    @basic_height
+  end
+  defp height_for(_no_count), do: @basic_height
 end
