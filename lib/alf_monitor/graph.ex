@@ -5,7 +5,7 @@ defmodule ALFMonitor.Graph do
       |> Enum.map(fn component ->
         %{
           id: inspect(component.pid),
-          data: component,
+          data: Map.merge(component, %{width: 160, height: 120}),
           position: %{x: 0, y: 0},
           type: "componentNode",
           draggable: false

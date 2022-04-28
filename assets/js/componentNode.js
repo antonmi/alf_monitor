@@ -9,9 +9,6 @@ import {
   getActiveComponentIds
 } from './storage';
 
-export const nodeWidth = 160;
-export const nodeHeight = 120;
-
 function splitLabel(label) {
   const len = 10
   const parts = label.split("_")
@@ -56,6 +53,8 @@ function getClassName(id) {
 }
 
 function componentNode({ data }) {
+  const nodeWidth = data.width
+  const nodeHeight = data.height
   const imageSrc = "images/" + data.type + ".png"
   const labelClass = data.type == 'stage' ? 'component-label-stage' : 'component-label'
 
