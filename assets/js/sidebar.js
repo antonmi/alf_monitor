@@ -8,11 +8,34 @@ import {
   getComponentData
 } from './storage';
 
+function select_ips(componentId, componentType, stage_set_ref) {
+  let allComponentIps = window.componentIps
+  let ips;
+  if (componentType == 'stage') {
+    ips = Object.entries(allComponentIps).reduce(function(acc, [_ref, value]) {
+      if (value.stage_set_ref == stage_set_ref) {
+        acc = Object.entries(value).reduce(function(inner_acc, [ref, inner_value]){
+          if (ref == 'stage_set_ref') {
+            return inner_acc
+          }
+          inner_acc[ref] = inner_value
+          return inner_acc
+        }, acc)
+      }
+      return acc
+    }, {});
+  } else {
+    ips = allComponentIps[componentId] || {}
+  }
+
+  return ips
+}
+
 const Sidebar = () => {
   const componentId = useSelector(getComponentId)
   const componentData = useSelector(getComponentData)
-  let allComponentIps = window.componentIps
-  let ips = allComponentIps[componentId] || []
+
+  let ips = select_ips(componentId, componentData.type, componentData.stage_set_ref)
 
   const [currentView, setCurrentView] = useState('info')
   const [popupIpRef, setPopupIpRef] = useState(false)

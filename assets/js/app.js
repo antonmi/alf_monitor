@@ -16,27 +16,30 @@ import store from './store'
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let Hooks = {}
 
-var dispatch = null;
-
 window.componentIps = {}
 
 function setComponentIps(payload) {
-  let id = payload.component.pid
+  let pid = payload.component.pid
+  let stage_set_ref = payload.component.stage_set_ref
   let action = payload.action
   let ip = payload.ip
 
   if (ip) {
-    if (!window.componentIps[id]) {
-      window.componentIps[id] = {}
+    if (!window.componentIps[pid]) {
+      if (stage_set_ref) {
+        window.componentIps[pid] = {stage_set_ref: stage_set_ref}
+      } else {
+        window.componentIps[pid] = {}
+      }
     }
-    if (!window.componentIps[id][ip.ref]) {
-      window.componentIps[id][ip.ref] = {}
+    if (!window.componentIps[pid][ip.ref]) {
+      window.componentIps[pid][ip.ref] = {}
     }
-    window.componentIps[id][ip.ref]['component'] = payload.component
+    window.componentIps[pid][ip.ref]['component'] = payload.component
     if (action == "start") {
-      window.componentIps[id][ip.ref]['start'] = {event: ip.event, time: payload.time}
+      window.componentIps[pid][ip.ref]['start'] = {event: ip.event, time: payload.time}
     } else if (action == "stop") {
-      window.componentIps[id][ip.ref]['stop'] = {event: ip.event, duration: payload.duration}
+      window.componentIps[pid][ip.ref]['stop'] = {event: ip.event, duration: payload.duration}
     }
   }
 }

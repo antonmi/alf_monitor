@@ -1,11 +1,10 @@
 import React from 'react';
 import {Handle, Position} from "react-flow-renderer";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   getComponentId,
-  getComponentData,
   getActiveComponentIds
 } from './storage';
 

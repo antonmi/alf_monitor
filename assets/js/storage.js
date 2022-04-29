@@ -10,7 +10,6 @@ export const storage = createSlice({
   },
   reducers: {
     selectComponent: (state, action) => {
-      console.log(action.payload)
       state.selectedComponentId = action.payload.id
       state.componentData = action.payload.data
     },
