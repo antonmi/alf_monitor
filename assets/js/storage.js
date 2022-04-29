@@ -5,30 +5,31 @@ export const storage = createSlice({
   initialState: {
     value: 0,
     selectedComponentId: null,
-    activeComponentIds: [],
+    activeComponentPidsOrRefs: [],
     componentData: {},
   },
   reducers: {
     selectComponent: (state, action) => {
+      console.log(action.payload)
       state.selectedComponentId = action.payload.id
       state.componentData = action.payload.data
     },
-    addActiveComponentId: (state, action) => {
-      state.activeComponentIds.push(action.payload)
+    addActiveComponentPidOrRef: (state, action) => {
+      state.activeComponentPidsOrRefs.push(action.payload)
     },
-    removeActiveComponentId: (state, action) => {
-      const index = state.activeComponentIds.indexOf(action.payload)
+    removeActiveComponentPidOrRef: (state, action) => {
+      const index = state.activeComponentPidsOrRefs.indexOf(action.payload)
       if (index > -1) {
-        state.activeComponentIds.splice(index, 1)
+        state.activeComponentPidsOrRefs.splice(index, 1)
       }
     }
   }
 })
 
-export const { selectComponent, addActiveComponentId, removeActiveComponentId } = storage.actions
+export const { selectComponent, addActiveComponentPidOrRef, removeActiveComponentPidOrRef } = storage.actions
 
 export const getComponentId = (state) => state.selectedComponentId
 export const getComponentData = (state) => state.componentData
-export const getActiveComponentIds = (state) => state.activeComponentIds
+export const getActiveComponentIds = (state) => state.activeComponentPidsOrRefs
 
 export default storage.reducer

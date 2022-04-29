@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import ReactFlow, { Handle, Position, MiniMap, Controls, addEdge, useNodesState, useEdgesState } from 'react-flow-renderer';
 import store from './store'
 import { Provider } from 'react-redux'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   selectComponent
 } from './storage';

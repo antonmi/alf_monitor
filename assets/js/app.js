@@ -7,10 +7,9 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import initFlow from "./flow";
-import { useSelector, useDispatch } from 'react-redux';
 import {
-  addActiveComponentId,
-  removeActiveComponentId
+  addActiveComponentPidOrRef,
+  removeActiveComponentPidOrRef
 } from './storage';
 import store from './store'
 
@@ -49,14 +48,20 @@ Hooks.LiveReact = {
   updated() {
     let json = atob(JSON.parse(this.el.textContent))
     let data = JSON.parse(json)
-    let payload = {id: data.component.pid, data: data}
     setComponentIps(data)
 
+    let pipOrRef
+    if (data.component.type == 'stage') {
+      pipOrRef = data.component.stage_set_ref
+    } else {
+      pipOrRef = data.component.pid
+    }
+
     if (data.action == "start") {
-      store.dispatch(addActiveComponentId(data.component.pid))
+      store.dispatch(addActiveComponentPidOrRef(pipOrRef))
     } else if (data.action == "stop") {
       setTimeout(function () {
-        store.dispatch(removeActiveComponentId(data.component.pid))
+        store.dispatch(removeActiveComponentPidOrRef(pipOrRef))
       }, 100)
     }
   }

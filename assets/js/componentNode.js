@@ -36,9 +36,9 @@ function formatPipelineName(name) {
   return name.slice(7)
 }
 
-function getClassName(id) {
+function getClassName(id, ref) {
   const componentId = useSelector(getComponentId)
-  const activeComponentIds = useSelector(getActiveComponentIds)
+  const activeComponentPidsOrRefs = useSelector(getActiveComponentIds)
 
   var className = 'component'
 
@@ -46,7 +46,7 @@ function getClassName(id) {
     className = className + ' selected'
   }
 
-  if (activeComponentIds.includes(id)) {
+  if (activeComponentPidsOrRefs.includes(id) || activeComponentPidsOrRefs.includes(ref)) {
     className = className + ' active'
   }
   return className
@@ -57,25 +57,30 @@ function componentNode({ data }) {
   const nodeHeight = data.height
   const imageSrc = "images/" + data.type + ".png"
   const labelClass = data.type == 'stage' ? 'component-label-stage' : 'component-label'
+  const count = data.count
 
   let label
   if (data.type == 'producer' || data.type == 'consumer') {
     label = formatPipelineName(data.pipeline_module)
   } else if (data.type == 'goto') {
     label = splitLabel(data.name) + ' -> ' + splitLabel(data.to)
-  } else if (data.count && data.count > 1) {
-    label = splitLabel(data.name + ' (' + data.count + ')')
   } else {
     label = splitLabel(data.name)
   }
-    const className = getClassName(data.pid)
+
+  let className = getClassName(data.pid, data.stage_set_ref)
 
   return (
     <>
       <div className={className} style={{width: nodeWidth, height: nodeHeight}}>
         <Handle type="target" position={Position.Right} />
 
-        <label className={labelClass}>{label}</label>
+
+        <label className={labelClass}>{label}
+          {count > 1 &&
+            <span className={'component-label-count'}>({count})</span>
+          }
+        </label>
         <img src={imageSrc} width={nodeWidth} height={nodeHeight}/>
 
         <Handle type="source" position={Position.Left} />

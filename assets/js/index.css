@@ -62,6 +62,10 @@ div.component.active {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.component-label-count {
+    color: darkblue;
+    padding-left: 5px;
+}
 
 .component-label {
     cursor: pointer;
