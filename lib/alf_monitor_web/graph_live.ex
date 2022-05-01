@@ -1,7 +1,7 @@
 defmodule ALFMonitorWeb.GraphLive do
   # In Phoenix v1.6+ apps, the line below should be: use MyAppWeb, :live_view
   use ALFMonitorWeb, :live_view
-  alias ALFMonitor.{Connector, LiveViewBroadcaster}
+  alias ALFMonitor.{Connector, Graph, LiveViewBroadcaster}
 
   def render(assigns) do
     ~H"""
@@ -59,6 +59,6 @@ defmodule ALFMonitorWeb.GraphLive do
 
   defp pipeline_graph(pipeline) do
     ALFMonitor.Connector.pipelines()[pipeline]
-    |> ALFMonitor.Graph.pipeline_to_graph()
+    |> Graph.pipeline_to_graph()
   end
 end

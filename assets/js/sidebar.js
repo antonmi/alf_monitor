@@ -31,10 +31,40 @@ function select_ips(componentId, componentType, stage_set_ref) {
   return ips
 }
 
+function formatComponentData(componentData) {
+  let componentDataCopy = { ...componentData }
+  delete componentDataCopy['width']
+  delete componentDataCopy['height']
+  delete componentDataCopy['source_code']
+  delete componentDataCopy['max_throughput']
+  delete componentDataCopy['processed_ips']
+  delete componentDataCopy['average_processing_time']
+  delete componentDataCopy['avg_throughput']
+  return componentDataCopy
+}
+
+function fetchComponentStats(componentData) {
+  let componentDataCopy = { ...componentData }
+  if (componentDataCopy.type == 'stage') {
+    let fetchData = ({max_throughput, processed_ips, average_processing_time}) => ({max_throughput, processed_ips, average_processing_time});
+    return fetchData(componentDataCopy)
+  } else if (componentDataCopy.type == 'producer') {
+    let fetchData = ({ips_in_queue, processed_ips, avg_throughput}) => ({ips_in_queue, processed_ips, avg_throughput});
+    return fetchData(componentDataCopy)
+  } else if (componentDataCopy.type == 'consumer') {
+    let fetchData = ({processed_ips, avg_throughput}) => ({processed_ips, avg_throughput});
+    return fetchData(componentDataCopy)
+  } else {
+    return false
+  }
+}
+
 const Sidebar = () => {
   const componentId = useSelector(getComponentId)
   const componentData = useSelector(getComponentData)
+  let formattedComponentData = formatComponentData(componentData)
 
+  let componentStats = fetchComponentStats(componentData)
   let ips = select_ips(componentId, componentData.type, componentData.stage_set_ref)
 
   const [currentView, setCurrentView] = useState('info')
@@ -60,8 +90,13 @@ const Sidebar = () => {
         <pre>
           <code dangerouslySetInnerHTML={{__html: hljs.highlight(source_code, {language: 'elixir'}).value}}></code>
         </pre>
+        { componentStats &&
         <pre>
-          <code dangerouslySetInnerHTML={{__html: hljs.highlight(stringify(componentData), {language: 'javascript'}).value}}></code>
+            <code dangerouslySetInnerHTML={{__html: hljs.highlight(stringify(componentStats), {language: 'elixir'}).value}}></code>
+          </pre>
+        }
+        <pre>
+          <code dangerouslySetInnerHTML={{__html: hljs.highlight(stringify(formattedComponentData), {language: 'javascript'}).value}}></code>
         </pre>
       </div>
   } else if (currentView == 'ips') {

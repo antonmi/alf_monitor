@@ -46,8 +46,9 @@ defmodule ALFMonitor.Connector do
 
         pipelines
         |> Enum.reduce(%{}, fn pipeline, acc ->
-          info = :rpc.call(@node, ALF.Introspection, :info, [pipeline])
-          Map.put(acc, pipeline, info)
+          components = :rpc.call(@node, ALF.Introspection, :components, [pipeline])
+          stats = :rpc.call(@node, ALF.Introspection, :performance_stats, [pipeline])
+          Map.merge(acc, %{pipeline => %{components: components, stats: stats}})
         end)
 
       false ->
