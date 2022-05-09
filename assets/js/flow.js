@@ -89,9 +89,10 @@ const Flow = () => {
         nodeTypes={nodeTypes}
         nodesDraggable={false}
         onNodeClick={onNodeClick}
+        fitView={true}
         maxZoom={2.0}
         defaultZoom={0.5}
-        minZoom={0.3}
+        minZoom={0.1}
       >
         <MiniMap />
         <Controls />
