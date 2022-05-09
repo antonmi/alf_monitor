@@ -100,7 +100,6 @@ defmodule ALFMonitor.Graph do
         :count,
         :stage_set_ref,
         :opts,
-        :doc,
         :source_code,
         :to
       ]

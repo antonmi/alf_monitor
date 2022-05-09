@@ -85,14 +85,8 @@ const Sidebar = () => {
   let activeWindow
   if (currentView == 'info') {
     let source_code = componentData['source_code']
-    let doc = componentData['doc']
     activeWindow =
       <div className={'info-view'}>
-        {doc &&
-          <pre>
-            <code dangerouslySetInnerHTML={{__html: hljs.highlight(doc, {language: 'elixir'}).value}}></code>
-          </pre>
-        }
         {source_code &&
           <pre>
             <code dangerouslySetInnerHTML={{__html: hljs.highlight(source_code, {language: 'elixir'}).value}}></code>

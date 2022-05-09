@@ -9,15 +9,24 @@ import {
 } from './storage';
 
 function splitLabel(label) {
-  const len = 10
-  const parts = label.split("_")
+  let splitBy
+
+  if (label.startsWith("Elixir.")) {
+    splitBy = "."
+    label = formatPipelineName(label)
+  } else {
+    splitBy = "_"
+  }
+  
+  const len = 5
+  const parts = label.split(splitBy)
   const initialValue = [parts.shift()]
 
   const newParts = parts.reduce(
     function(previousValue, currentValue){
       let last = previousValue.pop()
       if (last.length < len) {
-        previousValue.push(last + "_" + currentValue)
+        previousValue.push(last + splitBy + currentValue)
         return previousValue
       } else {
         previousValue.push(last)
@@ -28,7 +37,7 @@ function splitLabel(label) {
     initialValue
   );
 
-  return newParts.join("_ ")
+  return newParts.join(splitBy + " ")
 }
 
 function formatPipelineName(name) {
