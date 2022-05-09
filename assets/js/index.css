@@ -28,6 +28,11 @@ div.sidebar {
     overflow-x: hidden;
 }
 
+div .info-view {
+    height: 800px;
+    overflow: scroll;
+}
+
 div .ips-view {
     height: 800px;
     overflow: scroll;
