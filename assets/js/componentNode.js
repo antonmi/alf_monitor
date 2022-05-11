@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import {
   getComponentId,
-  getActiveComponentIds
+  getActiveComponentIds, getErrorComponentStageSetRefs
 } from './storage';
 
 function splitLabel(label) {
@@ -47,16 +47,20 @@ function formatPipelineName(name) {
 function getClassName(id, ref) {
   const componentId = useSelector(getComponentId)
   const activeComponentPidsOrRefs = useSelector(getActiveComponentIds)
+  const errorComponentStageSetRef = useSelector(getErrorComponentStageSetRefs)
 
   var className = 'component'
 
-  if (componentId == id) {
-    className = className + ' selected'
+  if (componentId == id) { className = className + ' selected' }
+
+
+  if (errorComponentStageSetRef[ref]) {
+    className = className + ' error'
+  } else {
+    let active = activeComponentPidsOrRefs[id] || activeComponentPidsOrRefs[ref]
+    if (active) { className = className + ' active' }
   }
 
-  if (activeComponentPidsOrRefs.includes(id) || activeComponentPidsOrRefs.includes(ref)) {
-    className = className + ' active'
-  }
   return className
 }
 

@@ -60,6 +60,11 @@ div.component.selected {
 div.component.active {
     background-color: lightgreen;
 }
+
+div.component.error {
+    background-color: orangered;
+}
+
 .component-label-stage {
     cursor: pointer;
     position: absolute;

@@ -9,7 +9,8 @@ import topbar from "../vendor/topbar"
 import initFlow from "./flow";
 import {
   addActiveComponentPidOrRef,
-  removeActiveComponentPidOrRef
+  removeActiveComponentPidOrRef,
+  addErrorComponentStageSetRef
 } from './storage';
 import store from './store'
 
@@ -17,6 +18,21 @@ let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("
 let Hooks = {}
 
 window.componentIps = {}
+
+function stopIpData(ip, payload) {
+  let data
+  if (ip.type == "ip") {
+    if (ip['done!']) {
+      data = {event: ip.event, duration: payload.duration, 'done!': true}
+    } else {
+      data = {event: ip.event, duration: payload.duration}
+    }
+
+  } else if (ip.type == "error_ip") {
+    data = {error: ip.error, stacktrace: ip.stacktrace, duration: payload.duration}
+  }
+  return data
+}
 
 function setComponentIps(payload) {
   let pid = payload.component.pid
@@ -39,7 +55,7 @@ function setComponentIps(payload) {
     if (action == "start") {
       window.componentIps[pid][ip.ref]['start'] = {event: ip.event, time: payload.time}
     } else if (action == "stop") {
-      window.componentIps[pid][ip.ref]['stop'] = {event: ip.event, duration: payload.duration}
+      window.componentIps[pid][ip.ref]['stop'] = stopIpData(ip, payload)
     }
   }
 }
@@ -53,18 +69,23 @@ Hooks.LiveReact = {
     let data = JSON.parse(json)
     setComponentIps(data)
 
-    let pipOrRef
+    let pidOrRef
     if (data.component.type == 'stage') {
-      pipOrRef = data.component.stage_set_ref
+      pidOrRef = data.component.stage_set_ref
     } else {
-      pipOrRef = data.component.pid
+      pidOrRef = data.component.pid
+    }
+
+    if (data.ip.type == 'error_ip') {
+      let ref = data.component.stage_set_ref
+      store.dispatch(addErrorComponentStageSetRef(ref))
     }
 
     if (data.action == "start") {
-      store.dispatch(addActiveComponentPidOrRef(pipOrRef))
+      store.dispatch(addActiveComponentPidOrRef(pidOrRef))
     } else if (data.action == "stop") {
       setTimeout(function () {
-        store.dispatch(removeActiveComponentPidOrRef(pipOrRef))
+        store.dispatch(removeActiveComponentPidOrRef(pidOrRef))
       }, 100)
     }
   }

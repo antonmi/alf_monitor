@@ -1,7 +1,7 @@
 defmodule ALFMonitor.Connector do
   use GenServer
 
-  @interval 500
+  @interval 0
   @node :node1@localhost
   # iex --sname node2@localhost -S mix
 
@@ -21,7 +21,7 @@ defmodule ALFMonitor.Connector do
   def load_data(), do: GenServer.call(__MODULE__, :load_data)
   def init_telemetry_handlers(), do: GenServer.call(__MODULE__, :init_telemetry_handlers)
 
-  def handle_call(:pipelines, _from, state), do:  {:reply, state.pipelines, state}
+  def handle_call(:pipelines, _from, state), do: {:reply, state.pipelines, state}
 
   def handle_call(:load_data, _from, state) do
     state = %{state | pipelines: do_load_data()}
@@ -35,9 +35,9 @@ defmodule ALFMonitor.Connector do
       :register_remote_function,
       [Node.self(), TelemetryHandler, :handle_event, [interval: @interval]]
     )
+
     {:reply, :ok, state}
   end
-
 
   defp do_load_data() do
     case Node.connect(@node) do
