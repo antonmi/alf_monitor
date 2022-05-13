@@ -1,7 +1,7 @@
 # ALFMonitor
 
 ```sh
-iex --sname node2@localhost -S mix phx.server
+NODE=node1@localhost iex --sname node2@localhost -S mix phx.server
 ```
 
 TODO:

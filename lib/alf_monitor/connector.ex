@@ -2,12 +2,26 @@ defmodule ALFMonitor.Connector do
   use GenServer
 
   @interval 0
-  @node :node1@localhost
-  # iex --sname node2@localhost -S mix
+  # NODE=node1@localhost iex --sname node2@localhost -S mix phx.server
 
   alias ALFMonitor.TelemetryHandler
 
   defstruct pipelines: %{}
+
+  def remote_node do
+    "NODE"
+    |> System.get_env()
+    |> String.to_atom()
+  end
+
+  def interval do
+    case System.get_env("INTERVAL") do
+      nil ->
+        @interval
+      interval ->
+        String.to_integer(interval)
+    end
+  end
 
   def start_link([]) do
     GenServer.start_link(__MODULE__, %__MODULE__{}, name: __MODULE__)
@@ -30,24 +44,24 @@ defmodule ALFMonitor.Connector do
 
   def handle_call(:init_telemetry_handlers, _from, state) do
     :rpc.call(
-      @node,
+      remote_node(),
       ALF.TelemetryBroadcaster,
       :register_remote_function,
-      [Node.self(), TelemetryHandler, :handle_event, [interval: @interval]]
+      [Node.self(), TelemetryHandler, :handle_event, [interval: interval()]]
     )
 
     {:reply, :ok, state}
   end
 
   defp do_load_data() do
-    case Node.connect(@node) do
+    case Node.connect(remote_node()) do
       true ->
-        pipelines = :rpc.call(@node, ALF.Introspection, :pipelines, [])
+        pipelines = :rpc.call(remote_node(), ALF.Introspection, :pipelines, [])
 
         pipelines
         |> Enum.reduce(%{}, fn pipeline, acc ->
-          components = :rpc.call(@node, ALF.Introspection, :components, [pipeline])
-          stats = :rpc.call(@node, ALF.Introspection, :performance_stats, [pipeline])
+          components = :rpc.call(remote_node(), ALF.Introspection, :components, [pipeline])
+          stats = :rpc.call(remote_node(), ALF.Introspection, :performance_stats, [pipeline])
           Map.merge(acc, %{pipeline => %{components: components, stats: stats}})
         end)
 
