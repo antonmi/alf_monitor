@@ -18,6 +18,7 @@ defmodule ALFMonitor.Connector do
     case System.get_env("INTERVAL") do
       nil ->
         @interval
+
       interval ->
         String.to_integer(interval)
     end

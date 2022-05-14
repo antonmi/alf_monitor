@@ -120,7 +120,7 @@ defmodule ALFMonitor.Graph do
 
   def avg_throughput(_since, _counter), do: :no_data
 
-  defp component_max_throughput(component, nil), do: :no_data
+  defp component_max_throughput(_component, nil), do: :no_data
 
   defp component_max_throughput(component, stats) do
     stage_stats = Map.get(stats, component.stage_set_ref)
@@ -132,7 +132,7 @@ defmodule ALFMonitor.Graph do
     end
   end
 
-  defp component_processed_ips(component, nil), do: :no_data
+  defp component_processed_ips(_component, nil), do: :no_data
 
   defp component_processed_ips(component, stats) do
     stage_stats = Map.get(stats, component.stage_set_ref)
@@ -144,7 +144,7 @@ defmodule ALFMonitor.Graph do
     end
   end
 
-  defp component_average_processing_time(component, nil), do: :no_data
+  defp component_average_processing_time(_component, nil), do: :no_data
 
   defp component_average_processing_time(component, stats) do
     stage_stats = Map.get(stats, component.stage_set_ref)
@@ -177,14 +177,14 @@ defmodule ALFMonitor.Graph do
     Float.round(sum / count, 1)
   end
 
-  defp width_for(%{count: count}) do
+  defp width_for(%{count: _count}) do
     #    round(@basic_width * :math.pow(count, 1/3))
     @basic_width
   end
 
   defp width_for(_no_count), do: @basic_width
 
-  defp height_for(%{count: count}) do
+  defp height_for(%{count: _count}) do
     #    round(@basic_height * :math.pow(count, 1/3))
     @basic_height
   end

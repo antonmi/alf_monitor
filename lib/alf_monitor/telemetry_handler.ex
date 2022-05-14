@@ -10,7 +10,7 @@ defmodule ALFMonitor.TelemetryHandler do
     )
   end
 
-  def handle_event([:alf, :component, :stop], %{duration: duration} = data, metadata) do
+  def handle_event([:alf, :component, :stop], %{duration: duration}, metadata) do
     component = get_in(metadata, [:component])
     ip = metadata[:ip]
     LiveViewBroadcaster.broadcast({:stop, div(duration, 1000), %{ip: ip, component: component}})

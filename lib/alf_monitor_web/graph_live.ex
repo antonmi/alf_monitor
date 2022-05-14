@@ -9,7 +9,7 @@ defmodule ALFMonitorWeb.GraphLive do
     """
   end
 
-  def mount(params, opts, socket) do
+  def mount(_params, _opts, socket) do
     Connector.load_data()
     Connector.init_telemetry_handlers()
 
