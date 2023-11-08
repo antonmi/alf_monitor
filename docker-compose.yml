@@ -1,0 +1,58 @@
+version: "3.9"
+networks:
+  cluster-network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - cluster-network
+    ports:
+      - '5444:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+  tictactoe-migrations:
+    build: ./tictactoe
+    command: bash -c "cd apps/tictactoe && mix ecto.create && mix ecto.migrate"
+    networks:
+      - cluster-network
+    depends_on:
+      - db
+  tictactoe:
+    build: ./tictactoe
+    command:  bash -c "cd apps/web && elixir --name 'tictactoe@tictactoe.docker' --erl '-kernel inet_dist_listen_min 9000 inet_dist_listen_max 9000' --cookie secret --no-halt -S mix run"
+    hostname: tictactoe.docker
+    networks:
+      - cluster-network
+    ports:
+      - "9000:9000"
+      - "4001:4001"
+    depends_on:
+      - db
+  frontend:
+    build: ./tictactoe/frontend
+    command: npm run serve
+    hostname: frontend.docker
+    networks:
+      - cluster-network
+    ports:
+      - "8080:8080"
+  monitor:
+    build: .
+    command: elixir --name 'monitor@monitor.docker' --erl '-kernel inet_dist_listen_min 9000 inet_dist_listen_max 9000' --cookie secret -S mix phx.server
+    hostname: monitor.docker
+    networks:
+      - cluster-network
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE=tictactoe@tictactoe.docker
+
+volumes:
+  db:
+    driver: local
+
