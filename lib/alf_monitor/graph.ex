@@ -22,11 +22,11 @@ defmodule ALFMonitor.Graph do
       |> Enum.reduce([], fn component, edges ->
         if Enum.any?(component.subscribed_to) do
           new_edges =
-            Enum.map(component.subscribed_to, fn {to, _ref} ->
+            Enum.map(component.subscribed_to, fn {{to_pid, to_ref}, _ref} ->
               %{
-                id: "#{inspect(component.pid)}-#{inspect(to)}",
+                id: "#{inspect(component.pid)}-#{inspect(to_pid)}",
                 source: inspect(component.pid),
-                target: inspect(to)
+                target: inspect(to_pid)
               }
             end)
 
