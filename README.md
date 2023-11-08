@@ -9,12 +9,17 @@ See:
 
 
 ```sh
-docker-compose up
+docker compose up
 or
-docker-compose up --build
+docker compose up --build
 ```
 
 [![alt text](ALFMonitor.png "Monitor your ALF app")](https://www.youtube.com/watch?v=8yqXyUR4hBA)
 
 localhost:4000
 localhost:8080
+
+
+
+#### Notes
+https://medium.com/@loganbbres/elixir-websocket-chat-example-c72986ab5778

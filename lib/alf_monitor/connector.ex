@@ -55,11 +55,8 @@ defmodule ALFMonitor.Connector do
   end
 
   defp do_load_data() do
-    IO.inspect("========================================================")
-    IO.inspect(remote_node())
-    case Node.connect(remote_node()) |> IO.inspect do
+    case Node.connect(remote_node()) do
       true ->
-      IO.inspect("111111111111111111111111111111111111111111111111111111")
         pipelines = :rpc.call(remote_node(), ALF.Introspection, :pipelines, [])
 
         pipelines
