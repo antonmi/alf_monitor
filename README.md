@@ -10,9 +10,10 @@ See:
 
 ```sh
 docker compose up
-or
+# or
 docker compose up --build
 
+# in other tab
 docker compose watch
 ```
 
