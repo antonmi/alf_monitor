@@ -12,6 +12,8 @@ See:
 docker compose up
 or
 docker compose up --build
+
+docker compose watch
 ```
 
 [![alt text](ALFMonitor.png "Monitor your ALF app")](https://www.youtube.com/watch?v=8yqXyUR4hBA)
@@ -19,6 +21,10 @@ docker compose up --build
 localhost:4000 - Monitor
 
 localhost:8080 - The game. Open in two browsers
+
+
+### Issues
+docker system prune --all --force --volumes
 
 
 

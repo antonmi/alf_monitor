@@ -5,7 +5,7 @@ networks:
 
 services:
   db:
-    image: postgres:14.1-alpine
+    image: postgres:15.1-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -31,6 +31,14 @@ services:
     ports:
       - "9000:9000"
       - "4001:4001"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./tictactoe
+          ignore:
+            - _build/
+            - deps/
+            - frontend/
     depends_on:
       - db
   frontend:
@@ -41,6 +49,13 @@ services:
       - cluster-network
     ports:
       - "8080:8080"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./tictactoe/frontend
+          target: /src/web
+          ignore:
+            - node_modules/
   monitor:
     build: .
     command: elixir --name 'monitor@monitor.docker' --erl '-kernel inet_dist_listen_min 9000 inet_dist_listen_max 9000' --cookie secret -S mix phx.server
@@ -49,6 +64,14 @@ services:
       - cluster-network
     ports:
       - "4000:4000"
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          ignore:
+            - tictactoe/
+            - _build/
+            - deps/
     environment:
       - NODE=tictactoe@tictactoe.docker
 
