@@ -10,37 +10,37 @@
 
 <script>
 import ApiService from "../services/ApiService";
-import LeaderBoardItem from "../components/LeaderBoardItem"
+import LeaderBoardItem from "../components/LeaderBoardItem";
 
 export default {
   name: "LeaderBoard",
   components: {
-    LeaderBoardItem
+    LeaderBoardItem,
   },
   data() {
     return {
-      users: []
-    }
+      users: [],
+    };
   },
   created() {
-    this.fetchLeaderBoard()
+    this.fetchLeaderBoard();
   },
   methods: {
     fetchLeaderBoard() {
       ApiService.showLeaderBoard()
-      .then(response => {
-        this.users = response.data
-      })
-      .catch(error => {
-        console.log(error)
-      })
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
-  table.leaderboard {
-    margin: auto;
-  }
+table.leaderboard {
+  margin: auto;
+}
 </style>

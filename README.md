@@ -23,11 +23,19 @@ localhost:4000 - Monitor
 
 localhost:8080 - The game. Open in two browsers
 
-
 ### Issues
 docker system prune --all --force --volumes
 
+### Run without docker
 
+```sh
+# tictactoe backend
+iex --sname tictactoe@localhost -S mix run --no-halt
+# tictactoe fronted
+npm run serve
+# monitor
+NODE=tictactoe@localhost iex --sname monitor@localhost -S mix phx.server
+```
 
 #### Notes
 Simple websockets: https://medium.com/@loganbbres/elixir-websocket-chat-example-c72986ab5778

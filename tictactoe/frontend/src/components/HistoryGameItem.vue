@@ -10,26 +10,24 @@ export default {
   name: "HistoryGameItem",
   props: {
     game: null,
-    myUuid: null
+    myUuid: null,
   },
   methods: {
     gameStatus(game) {
-      if (game.status == 'victory' && this.myUuid != game.turn_uuid) {
-        return "lost"
+      if (game.status == "victory" && this.myUuid != game.turn_uuid) {
+        return "lost";
       }
-      return game.status
+      return game.status;
     },
     opponentName(game) {
       if (game.opponent_name) {
-        return game.opponent_name
+        return game.opponent_name;
       } else {
-        return 'No opponent'
+        return "No opponent";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

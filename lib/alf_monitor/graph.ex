@@ -20,19 +20,23 @@ defmodule ALFMonitor.Graph do
     edges =
       components
       |> Enum.reduce([], fn component, edges ->
-        if component.pipeline_module == Tictactoe.Pipelines.UserMoves do
-          IO.inspect(component)
-#          IO.inspect(edges)
-        end
         if Enum.any?(component.subscribed_to) do
           new_edges =
-            Enum.map(component.subscribed_to, fn {{to_pid, _to_ref}, _opts} ->
-              %{
-                id: "#{inspect(component.pid)}-#{inspect(to_pid)}",
-                source: inspect(component.pid),
-                target: inspect(to_pid)
-              }
-            end)
+            Enum.map(component.subscribed_to,
+              fn
+                {{to_pid, _to_ref}, _opts} ->
+                  %{
+                    id: "#{inspect(component.pid)}-#{inspect(to_pid)}",
+                    source: inspect(component.pid),
+                    target: inspect(to_pid)
+                  }
+                {to_ref, :sync} ->
+                  %{
+                    id: "#{inspect(component.pid)}-#{inspect(to_ref)}",
+                    source: inspect(component.pid),
+                    target: inspect(to_ref)
+                  }
+              end)
 
           new_edges ++ edges
         else

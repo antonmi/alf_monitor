@@ -26,7 +26,7 @@ defmodule Main.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:alf, "0.9.4"},
+      {:alf, "0.9.5"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, "~> 0.17"}
     ]

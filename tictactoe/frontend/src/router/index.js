@@ -18,7 +18,7 @@ const routes = [
     path: "/leaderboard",
     name: "LeaderBoard",
     component: LeaderBoard,
-  }
+  },
 ];
 
 const router = createRouter({

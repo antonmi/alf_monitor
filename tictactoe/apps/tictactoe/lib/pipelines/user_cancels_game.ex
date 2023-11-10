@@ -23,9 +23,8 @@ defmodule Tictactoe.Pipelines.UserCancelsGame do
     stage(:validate_input),
     done(:done_if_invalid_input),
     stage(:find_user_by_token),
-    done(:done_if_no_user),
     stage(:find_game),
-    done(:done_if_no_game),
+    done(:done_if_any_error),
     stage(:cancel_game),
     stage(:prepare_game_data)
   ]
@@ -51,9 +50,6 @@ defmodule Tictactoe.Pipelines.UserCancelsGame do
     end
   end
 
-  def done_if_no_user(%__MODULE__{error: :no_such_user}, _), do: true
-  def done_if_no_user(%__MODULE__{error: nil}, _), do: false
-
   def find_game(%__MODULE__{game_uuid: game_uuid} = event, _) do
     case Games.find(game_uuid) do
       %Game{} = game ->
@@ -64,8 +60,8 @@ defmodule Tictactoe.Pipelines.UserCancelsGame do
     end
   end
 
-  def done_if_no_game(%__MODULE__{error: :no_such_game}, _), do: true
-  def done_if_no_game(%__MODULE__{error: nil}, _), do: false
+  def done_if_any_error(%__MODULE__{error: nil}, _), do: false
+  def done_if_any_error(%__MODULE__{error: _error}, _), do: true
 
   def cancel_game(%__MODULE__{game: game} = event, _) do
     case game.status do

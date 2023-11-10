@@ -24,6 +24,7 @@ defmodule Tictactoe.Application do
     pipelines_to_start()
     |> Enum.each(fn pipeline ->
       :ok = pipeline.start()
+#      :ok = pipeline.start(sync: true)
     end)
   end
 

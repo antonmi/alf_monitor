@@ -41,6 +41,9 @@ services:
             - frontend/
     depends_on:
       - db
+    environment:
+      - DB_HOSTNAME=db
+
   frontend:
     build: ./tictactoe/frontend
     command: npm run serve

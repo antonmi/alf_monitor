@@ -1,10 +1,10 @@
 module.exports = {
   configureWebpack: {
     optimization: {
-      splitChunks: false
-    }
+      splitChunks: false,
+    },
   },
   css: {
     extract: false,
   },
-}
+};

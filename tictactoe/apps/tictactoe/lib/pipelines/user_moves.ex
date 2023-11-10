@@ -28,15 +28,12 @@ defmodule Tictactoe.Pipelines.UserMoves do
     stage(:validate_input),
     done(:done_if_invalid_input),
     stage(:find_user_by_token),
-    done(:done_if_no_user),
     stage(:find_game),
-    done(:done_if_no_game),
     stage(:check_if_game_active),
-    done(:done_if_game_is_not_active),
+    done(:done_if_any_error),
     plug_with(GameMoveAdapter, [name: "GameMove"], do: stages_from(GameMove)),
-    done(:done_if_error_after_move),
     stage(:update_game_record),
-    done(:done_if_update_error),
+    done(:done_if_any_error),
     stage(:update_user_scores_if_game_finished),
     stage(:prepare_game_data)
   ]
@@ -62,9 +59,6 @@ defmodule Tictactoe.Pipelines.UserMoves do
     end
   end
 
-  def done_if_no_user(%__MODULE__{error: :no_such_user}, _), do: true
-  def done_if_no_user(%__MODULE__{error: nil}, _), do: false
-
   def find_game(%__MODULE__{game_uuid: game_uuid} = event, _) do
     case Games.find(game_uuid) do
       %Game{} = game ->
@@ -74,9 +68,6 @@ defmodule Tictactoe.Pipelines.UserMoves do
         %{event | error: :no_such_game}
     end
   end
-
-  def done_if_no_game(%__MODULE__{error: :no_such_game}, _), do: true
-  def done_if_no_game(%__MODULE__{error: _error}, _), do: false
 
   def check_if_game_active(%__MODULE__{game: game} = event, _) do
     case game.status do
@@ -91,12 +82,8 @@ defmodule Tictactoe.Pipelines.UserMoves do
     end
   end
 
-  def done_if_game_is_not_active(%__MODULE__{error: :game_is_cancelled}, _), do: true
-  def done_if_game_is_not_active(%__MODULE__{error: :game_is_not_active}, _), do: true
-  def done_if_game_is_not_active(%__MODULE__{error: _error}, _), do: false
-
-  def done_if_error_after_move(%__MODULE__{error: nil}, _), do: false
-  def done_if_error_after_move(%__MODULE__{error: _error}, _), do: true
+  def done_if_any_error(%__MODULE__{error: nil}, _), do: false
+  def done_if_any_error(%__MODULE__{error: _error}, _), do: true
 
   def update_game_record(%__MODULE__{game: game} = event, _) do
     case Games.insert(game) do
@@ -107,9 +94,6 @@ defmodule Tictactoe.Pipelines.UserMoves do
         %{event | error: :cant_update_game}
     end
   end
-
-  def done_if_update_error(%__MODULE__{error: :cant_update_game}, _), do: true
-  def done_if_update_error(%__MODULE__{error: _error}, _), do: false
 
   def update_user_scores_if_game_finished(%__MODULE__{game: game, user: user} = event, _opts) do
     {:ok, user} =

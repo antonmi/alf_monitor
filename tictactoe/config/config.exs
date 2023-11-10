@@ -4,7 +4,7 @@ config :tictactoe, Tictactoe.Repo,
   database: "tictactoe_dev",
   username: "postgres",
   password: "postgres",
-  hostname: "db"
+  hostname: System.get_env("DB_HOSTNAME") || "localhost"
 
 config :tictactoe, ecto_repos: [Tictactoe.Repo]
 

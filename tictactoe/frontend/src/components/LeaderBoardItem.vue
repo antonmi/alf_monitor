@@ -10,11 +10,9 @@ export default {
   name: "LeaderBoardItem",
   props: {
     user: null,
-    myUuid: null
-  }
-}
+    myUuid: null,
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

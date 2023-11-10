@@ -34,6 +34,6 @@ Visit ngrok http url
 
 ### with node name
 ```sh
-iex --sname node1@localhost -S mix
+iex --sname tictactoe@localhost -S mix run --no-halt
 ```
 ![Tic-Tac-Toe](tic-tac-toe.png)
