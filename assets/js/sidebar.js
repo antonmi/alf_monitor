@@ -76,7 +76,7 @@ const Sidebar = () => {
     } else {
       return ""
     }
-  };
+  }
 
   function stringify(value) {
     return (value ? JSON.stringify(value, null, 2) : "")
